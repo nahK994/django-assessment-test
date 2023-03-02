@@ -4,6 +4,6 @@ from rest_framework import viewsets
 from utils.mixins import ModelManagerMixin
 
 
-class CompanyTypeViewset(ModelManagerMixin, viewsets.ModelViewSet):
+class CompanyViewset(ModelManagerMixin, viewsets.ModelViewSet):
     serializer_class = CompanySerializer
     queryset = Company.objects.all()

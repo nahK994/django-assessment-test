@@ -14,13 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from apps.company_management_app.views import CompanyViewset, get_company_devices
 from apps.employee_management_app.views import EmployeeViewset
 from apps.device_management_app.views import *
 from rest_framework.routers import DefaultRouter
 from rest_framework_swagger.views import get_swagger_view
-from django.conf.urls import url
 
 
 router = DefaultRouter()
@@ -35,9 +34,9 @@ base_device_url = "api/devices"
 router.register(base_device_url, DeviceViewset, basename="device")
 
 url_patterns = router.urls + [
-    url(base_company_url+'/<int:company_id>/devices', get_company_devices),
-    url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/allot', allot_device_for_employee),
-    url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/deallot', deallot_device_for_employee),
+    re_path(base_company_url+'/<int:company_id>/devices', get_company_devices),
+    re_path(base_device_url+'/<str:device_id>/employees/<int:employee_id>/allot', allot_device_for_employee),
+    re_path(base_device_url+'/<str:device_id>/employees/<int:employee_id>/deallot', deallot_device_for_employee),
 ]
 
 schema_view = get_swagger_view(title='Config Management Services API', patterns=url_patterns)
@@ -47,5 +46,5 @@ urlpatterns = [
     path(base_company_url+'/', include('apps.company_management_app.urls')),
     path(base_employee_url+'/', include('apps.employee_management_app.urls')),
     path(base_device_url+'/', include('apps.device_management_app.urls')),
-    url('api/docs', schema_view)
+    re_path('api/docs', schema_view)
 ]

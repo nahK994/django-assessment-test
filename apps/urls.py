@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.company_management_app.views import CompanyViewset
+from apps.company_management_app.views import CompanyViewset, get_company_devices
 from apps.employee_management_app.views import EmployeeViewset
 from apps.device_management_app.views import *
 from rest_framework.routers import DefaultRouter
@@ -35,6 +35,7 @@ base_device_url = "api/devices"
 router.register(base_device_url, DeviceViewset, basename="device")
 
 url_patterns = router.urls + [
+    url(base_company_url+'/<int:company_id>/devices', get_company_devices),
     url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/allot', allot_device_for_employee),
     url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/deallot', deallot_device_for_employee),
 ]

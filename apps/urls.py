@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from apps.company_management_app import views as company_views
-from apps.employee_management_app import views as employee_views
+from apps.company_management_app.views import CompanyViewset
+from apps.employee_management_app.views import EmployeeViewset
+from apps.device_management_app.views import DeviceViewset
 from rest_framework.routers import DefaultRouter
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import url
@@ -26,10 +27,13 @@ from django.conf.urls import url
 router = DefaultRouter()
 
 base_company_url = "api/company"
-router.register(base_company_url, company_views.CompanyViewset, basename="company")
+router.register(base_company_url, CompanyViewset, basename="company")
 
 base_employee_url = "api/employee"
-router.register(base_employee_url, employee_views.EmployeeViewset, basename="employee")
+router.register(base_employee_url, EmployeeViewset, basename="employee")
+
+base_device_url = "api/device"
+router.register(base_device_url, DeviceViewset, basename="device")
 
 schema_view = get_swagger_view(title='Config Management Services API', patterns=router.urls)
 
@@ -38,5 +42,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path(base_company_url+'/', include('apps.company_management_app.urls')),
     path(base_employee_url+'/', include('apps.employee_management_app.urls')),
+    path(base_device_url+'/', include('apps.device_management_app.urls')),
     url('api/docs', schema_view)
 ]

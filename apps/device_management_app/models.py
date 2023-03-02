@@ -7,7 +7,7 @@ class Device(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
     type = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=20, default="not assigned")
     company = models.ForeignKey(Company, related_name="devices", on_delete=models.CASCADE)
     assignee = models.ForeignKey(Employee, related_name="assigned_to", on_delete=models.CASCADE, null=True, blank=True)
     log = models.CharField(max_length=500)

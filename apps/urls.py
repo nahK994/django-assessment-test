@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 from apps.company_management_app.views import CompanyViewset
 from apps.employee_management_app.views import EmployeeViewset
-from apps.device_management_app.views import DeviceViewset
+from apps.device_management_app.views import *
 from rest_framework.routers import DefaultRouter
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import url
@@ -26,17 +25,21 @@ from django.conf.urls import url
 
 router = DefaultRouter()
 
-base_company_url = "api/company"
+base_company_url = "api/companies"
 router.register(base_company_url, CompanyViewset, basename="company")
 
-base_employee_url = "api/employee"
+base_employee_url = "api/employees"
 router.register(base_employee_url, EmployeeViewset, basename="employee")
 
-base_device_url = "api/device"
+base_device_url = "api/devices"
 router.register(base_device_url, DeviceViewset, basename="device")
 
-schema_view = get_swagger_view(title='Config Management Services API', patterns=router.urls)
+url_patterns = router.urls + [
+    url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/allot', allot_device_for_employee),
+    url(base_device_url+'/<str:device_id>/employees/<int:employee_id>/deallot', deallot_device_for_employee),
+]
 
+schema_view = get_swagger_view(title='Config Management Services API', patterns=url_patterns)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
